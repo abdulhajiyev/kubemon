@@ -513,29 +513,29 @@ function App() {
 
 	return (
 		<div
-			className="h-screen relative antialiased gap-2 flex flex-col p-5"
+			className=" relative antialiased gap-2 flex flex-col h-screen"
 			data-theme="white"
 		>
 			{apiData ? (
-				<div className="flex justify-between gap-2 items-center p-4">
+				<div className="flex justify-between gap-2 items-center p-2 border-b sticky top-0 bg-base-100 z-50 py-4">
 					<div className="font-extrabold text-2xl">
 						Kubemon - WEB Interface for kubeigen
 					</div>
 					<div className="gap-2 flex">
 						<a href="/">
-							<button className="btn">
+							<button className="btn btn-sm">
 								<FiServer />
 								Hosts
 							</button>
 						</a>
 						<a href="/">
-							<button className="btn">
+							<button className="btn btn-sm">
 								<MdMiscellaneousServices />
 								Services
 							</button>
 						</a>
 						<a href="/">
-							<button className="btn">
+							<button className="btn btn-sm">
 								<LuTerminal />
 								Terminal
 							</button>
@@ -543,9 +543,9 @@ function App() {
 					</div>
 				</div>
 			) : null}
-			<div className=" flex justify-center items-center h-full">
-				{apiData ? (
-					<table className="table table-fixed w-full">
+			{apiData ? (
+				<div className="p-2">
+					<table className="table table-fixed w-full ">
 						<thead className="text-base">
 							<tr>
 								<th
@@ -592,7 +592,7 @@ function App() {
 									id={`row-${index}`}
 									className="hover"
 									/* style={{
-										
+
 										transition: "background-color 0.2s ease-out",
 										cursor: "default",
 									}} */
@@ -632,10 +632,12 @@ function App() {
 							))}
 						</tbody>
 					</table>
-				) : (
+				</div>
+			) : (
+				<div className="w-full h-screen flex justify-center items-center">
 					<div className="rounded-full h-20 w-20 bg-violet-800 animate-ping" />
-				)}
-			</div>
+				</div>
+			)}
 
 			{showFreshdeskTicketPopup && (
 				<FreshdeskTicketPopup
@@ -659,7 +661,7 @@ function App() {
 			{contextMenuVisible && (
 				<div
 					ref={contextMenuRef}
-					className="absolute z-10 bg-gray-900 border rounded shadow"
+					className="absolute z-10 border rounded-2xl"
 					style={{
 						top: contextMenuPosition.y,
 						left: contextMenuPosition.x,
