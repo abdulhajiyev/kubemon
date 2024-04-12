@@ -523,7 +523,7 @@ function App() {
 
 	return (
 		<div
-			className=" relative antialiased gap-2 flex flex-col h-screen"
+			className="relative antialiased flex flex-col h-full"
 			data-theme="white"
 		>
 			<Terminal
@@ -531,7 +531,7 @@ function App() {
 				toggleVisibility={toggleTerminalVisibility}
 			/>
 			{apiData ? (
-				<div className="flex justify-between gap-2 items-center p-2 border-b sticky top-0 bg-base-100 z-50 py-4">
+				<div className="sticky flex justify-between py-4 px-6 top-0 z-40 w-full border-b text-white backdrop-blur-sm bg-gradient-to-r from-indigo-500/60 via-purple-500/60 to-pink-500/60">
 					<div className="font-extrabold text-2xl">
 						Kubemon - WEB Interface for kubeigen
 					</div>
