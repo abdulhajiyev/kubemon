@@ -3,6 +3,7 @@ import { LuTerminal } from "react-icons/lu";
 import { FiServer } from "react-icons/fi";
 import { MdMiscellaneousServices } from "react-icons/md";
 import Terminal from "./Terminal";
+import logo from "./assets/kubemongen.png"
 
 function FreshdeskTicketPopup({ onClose, onCreateTicket }) {
 	const [selectedAgent, setSelectedAgent] = useState("Select the Agent");
@@ -531,9 +532,9 @@ function App() {
 				toggleVisibility={toggleTerminalVisibility}
 			/>
 			{apiData ? (
-				<div className="sticky flex justify-between py-4 px-6 top-0 z-40 w-full border-b text-white backdrop-blur-sm bg-gradient-to-r from-indigo-500/60 via-purple-500/60 to-pink-500/60">
-					<div className="font-extrabold text-2xl">
-						Kubemon - WEB Interface for kubeigen
+				<div className="sticky flex justify-between py-4 px-6 top-0 z-40 w-full border-b text-white backdrop-blur-sm bg-gradient-to-r from-indigo-500/60 via-purple-500/60 to-pink-500/60 drop-shadow-md">
+					<div className="text-2xl flex">
+						<img src={logo} alt="Logo" className="h-8 inline-block mx-2" />
 					</div>
 					<div className="gap-2 flex">
 						<a
@@ -541,7 +542,7 @@ function App() {
 							target="_blank"
 							rel="noreferrer"
 						>
-							<button type="button" className="btn btn-sm">
+							<button type="button" data-theme="cupcake" className="btn btn-sm backdrop-blur-3xl border-0 bg-white/50">
 								<FiServer />
 								Hosts
 							</button>
@@ -551,14 +552,14 @@ function App() {
 							target="_blank"
 							rel="noreferrer"
 						>
-							<button type="button" className="btn btn-sm">
+							<button type="button"data-theme="cupcake" className="btn btn-sm backdrop-blur-3xl border-0 bg-white/50">
 								<MdMiscellaneousServices />
 								Services
 							</button>
 						</a>
 						<button
 							type="button"
-							className="btn btn-sm"
+							data-theme="cupcake" className="btn btn-sm backdrop-blur-3xl border-0 bg-white/50"
 							onClick={toggleTerminalVisibility}
 						>
 							<LuTerminal />
