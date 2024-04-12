@@ -30,18 +30,18 @@ function FreshdeskTicketPopup({ onClose, onCreateTicket }) {
 
 	return (
 		<div className="absolute top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-25">
-			<div className="bg-white rounded-lg p-4 w-80">
+			<div className="bg-base-200 rounded-lg p-4 w-80 border">
 				<div className="mb-4">
 					<label
 						htmlFor="agentSelect"
-						className="block text-sm font-medium text-gray-700"
+						className="block text-sm font-medium"
 					>
 						Agent:
 					</label>
 					<select
 						id="agentSelect"
 						name="agent"
-						className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+						className="select w-full mt-2 select-sm"
 						value={selectedAgent}
 						onChange={(e) => setSelectedAgent(e.target.value)}
 					>
@@ -58,14 +58,14 @@ function FreshdeskTicketPopup({ onClose, onCreateTicket }) {
 				<div className="mb-4">
 					<label
 						htmlFor="applicationSelect"
-						className="block text-sm font-medium text-gray-700"
+						className="block text-sm font-medium"
 					>
 						Application:
 					</label>
 					<select
 						id="applicationSelect"
 						name="application"
-						className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+						className="mt-1 select w-full select-sm"
 						value={selectedApplication}
 						onChange={(e) => setSelectedApplication(e.target.value)}
 					>
@@ -92,13 +92,13 @@ function FreshdeskTicketPopup({ onClose, onCreateTicket }) {
 				)}
 				<div className="flex justify-end">
 					<button
-						className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+						className="btn btn-outline btn-accent btn-sm"
 						onClick={handleCreateTicket}
 					>
 						Create
 					</button>
 					<button
-						className="ml-2 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
+						className="btn btn-outline btn-default ml-2 btn-sm"
 						onClick={onClose}
 					>
 						Cancel
@@ -128,11 +128,11 @@ function FreshdeskNotePopup({ onClose, onNoteTicket }) {
 
 	return (
 		<div className="absolute top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-25">
-			<div className="bg-white rounded-lg p-4 w-80">
+			<div className="bg-base-200 rounded-lg p-4 w-80 border">
 				<div className="mb-4">
 					<label
 						htmlFor="ticketIdSelect"
-						className="block text-sm font-medium text-gray-700"
+						className="block text-sm font-medium "
 					>
 						Ticket Number:
 					</label>
@@ -140,7 +140,7 @@ function FreshdeskNotePopup({ onClose, onNoteTicket }) {
 						id="ticketIdSelect"
 						type="number"
 						name="ticketId"
-						className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+						className="mt-2 input input-bordered input-sm w-full [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
 						min="1"
 						max="999999"
 						value={selectedTicketId}
@@ -152,13 +152,13 @@ function FreshdeskNotePopup({ onClose, onNoteTicket }) {
 				)}
 				<div className="flex justify-end">
 					<button
-						className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+						className="btn btn-outline btn-accent btn-sm ml-2"
 						onClick={handleNoteTicket}
 					>
 						Create
 					</button>
 					<button
-						className="ml-2 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
+						className="btn btn-outline btn-default btn-sm ml-2"
 						onClick={onClose}
 					>
 						Cancel
@@ -188,11 +188,11 @@ function FreshdeskDumpPopup({ onClose, onDumpLogs }) {
 
 	return (
 		<div className="absolute top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-25">
-			<div className="bg-white rounded-lg p-4 w-80">
+			<div className="bg-base-200 rounded-lg p-4 w-80 border">
 				<div className="mb-4">
 					<label
 						htmlFor="ticketIdSelect"
-						className="block text-sm font-medium text-gray-700"
+						className="block text-sm font-medium"
 					>
 						Ticket Number:
 					</label>
@@ -200,7 +200,7 @@ function FreshdeskDumpPopup({ onClose, onDumpLogs }) {
 						id="ticketIdSelect"
 						type="number"
 						name="ticketId"
-						className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+						className="mt-2 input input-bordered input-sm w-full [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
 						min="1"
 						max="999999"
 						value={selectedTicketId}
@@ -212,13 +212,13 @@ function FreshdeskDumpPopup({ onClose, onDumpLogs }) {
 				)}
 				<div className="flex justify-end">
 					<button
-						className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+						className="btn btn-outline btn-accent ml-2 btn-sm"
 						onClick={handleDumpLogs}
 					>
 						Create
 					</button>
 					<button
-						className="ml-2 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
+						className="btn btn-outline btn-default btn-sm ml-2"
 						onClick={onClose}
 					>
 						Cancel
@@ -680,12 +680,12 @@ function App() {
 						top: contextMenuPosition.y,
 						left: contextMenuPosition.x,
 						minWidth: "200px",
-						background: "#303030",
+						// background: "#303030",
 						fontSize: "12px",
-						padding: "4px",
+						// padding: "4px",
 					}}
 				>
-					<ul>
+					<ul className="menu bg-base-200 rounded-box">
 						<li>
 							<button
 								onClick={() => {
