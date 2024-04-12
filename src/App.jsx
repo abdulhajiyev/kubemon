@@ -32,10 +32,7 @@ function FreshdeskTicketPopup({ onClose, onCreateTicket }) {
 		<div className="absolute top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-25">
 			<div className="bg-base-200 rounded-lg p-4 w-80 border">
 				<div className="mb-4">
-					<label
-						htmlFor="agentSelect"
-						className="block text-sm font-medium"
-					>
+					<label htmlFor="agentSelect" className="block text-sm font-medium">
 						Agent:
 					</label>
 					<select
@@ -190,10 +187,7 @@ function FreshdeskDumpPopup({ onClose, onDumpLogs }) {
 		<div className="absolute top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-25">
 			<div className="bg-base-200 rounded-lg p-4 w-80 border">
 				<div className="mb-4">
-					<label
-						htmlFor="ticketIdSelect"
-						className="block text-sm font-medium"
-					>
+					<label htmlFor="ticketIdSelect" className="block text-sm font-medium">
 						Ticket Number:
 					</label>
 					<input
@@ -522,33 +516,34 @@ function App() {
 			className="h-screen relative antialiased gap-2 flex flex-col p-5"
 			data-theme="white"
 		>
-			<div className="flex justify-between gap-2 items-center p-4">
-				<div className="font-extrabold text-2xl">
-					Kubemon - WEB Interface for kubeigen
+			{apiData ? (
+				<div className="flex justify-between gap-2 items-center p-4">
+					<div className="font-extrabold text-2xl">
+						Kubemon - WEB Interface for kubeigen
+					</div>
+					<div className="gap-2 flex">
+						<a href="/">
+							<button className="btn">
+								<FiServer />
+								Hosts
+							</button>
+						</a>
+						<a href="/">
+							<button className="btn">
+								<MdMiscellaneousServices />
+								Services
+							</button>
+						</a>
+						<a href="/">
+							<button className="btn">
+								<LuTerminal />
+								Terminal
+							</button>
+						</a>
+					</div>
 				</div>
-				<div className="gap-2 flex">
-					<a href="/">
-						<button className="btn">
-							<FiServer />
-							Hosts
-						</button>
-					</a>
-					<a href="/">
-						<button className="btn">
-							<MdMiscellaneousServices />
-							Services
-						</button>
-					</a>
-					{/* onclick */}
-					<a href="/">
-						<button className="btn">
-							<LuTerminal />
-							Terminal
-						</button>
-					</a>
-				</div>
-			</div>
-			<div className=" flex " style={{ maxHeight: "100%" }}>
+			) : null}
+			<div className=" flex justify-center items-center h-full">
 				{apiData ? (
 					<table className="table table-fixed w-full">
 						<thead className="text-base">
@@ -638,18 +633,7 @@ function App() {
 						</tbody>
 					</table>
 				) : (
-					<div
-						style={{
-							position: "absolute",
-							top: "50%",
-							left: "50%",
-							transform: "translate(-50%, -50%)",
-							fontSize: "48px",
-							color: "white",
-						}}
-					>
-						Loading API data, please wait...
-					</div>
+					<div className="rounded-full h-20 w-20 bg-violet-800 animate-ping" />
 				)}
 			</div>
 
