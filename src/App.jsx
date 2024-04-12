@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import Iframe from "react-iframe";
-import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { LuTerminal } from "react-icons/lu";
 import { FiServer } from "react-icons/fi";
 import { MdMiscellaneousServices } from "react-icons/md";
+import Terminal from "./Terminal";
 
 function FreshdeskTicketPopup({ onClose, onCreateTicket }) {
 	const [selectedAgent, setSelectedAgent] = useState("Select the Agent");
@@ -83,18 +82,19 @@ function FreshdeskTicketPopup({ onClose, onCreateTicket }) {
 						<option value="Widea iWAT">Widea iWAT</option>
 					</select>
 				</div>
-				{/* Error message */}
 				{errorMessage && (
 					<p className="text-red-500 text-xs mb-2">{errorMessage}</p>
 				)}
 				<div className="flex justify-end">
 					<button
+						type="button"
 						className="btn btn-outline btn-accent btn-sm"
 						onClick={handleCreateTicket}
 					>
 						Create
 					</button>
 					<button
+						type="button"
 						className="btn btn-outline btn-default ml-2 btn-sm"
 						onClick={onClose}
 					>
@@ -127,10 +127,7 @@ function FreshdeskNotePopup({ onClose, onNoteTicket }) {
 		<div className="absolute top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-25">
 			<div className="bg-base-200 rounded-lg p-4 w-80 border">
 				<div className="mb-4">
-					<label
-						htmlFor="ticketIdSelect"
-						className="block text-sm font-medium "
-					>
+					<label htmlFor="ticketIdSelect" className="block text-sm font-medium">
 						Ticket Number:
 					</label>
 					<input
@@ -149,12 +146,14 @@ function FreshdeskNotePopup({ onClose, onNoteTicket }) {
 				)}
 				<div className="flex justify-end">
 					<button
+						type="button"
 						className="btn btn-outline btn-accent btn-sm ml-2"
 						onClick={handleNoteTicket}
 					>
 						Create
 					</button>
 					<button
+						type="button"
 						className="btn btn-outline btn-default btn-sm ml-2"
 						onClick={onClose}
 					>
@@ -206,12 +205,14 @@ function FreshdeskDumpPopup({ onClose, onDumpLogs }) {
 				)}
 				<div className="flex justify-end">
 					<button
+						type="button"
 						className="btn btn-outline btn-accent ml-2 btn-sm"
 						onClick={handleDumpLogs}
 					>
 						Create
 					</button>
 					<button
+						type="button"
 						className="btn btn-outline btn-default btn-sm ml-2"
 						onClick={onClose}
 					>
@@ -225,7 +226,6 @@ function FreshdeskDumpPopup({ onClose, onDumpLogs }) {
 
 function App() {
 	const [apiData, setApiData] = useState(null);
-	const [topPanelHeight, setTopPanelHeight] = useState("50%");
 	const [maxHostWidth, setMaxHostWidth] = useState(0);
 	const [maxServiceWidth, setMaxServiceWidth] = useState(0);
 	const [contextMenuVisible, setContextMenuVisible] = useState(false);
@@ -233,13 +233,17 @@ function App() {
 		x: 0,
 		y: 0,
 	});
-	const [hoveredTableRowIndex, setHoveredTableRowIndex] = useState(null);
 	const [contextApiHost, setContextApiHost] = useState("");
 	const [contextApiService, setContextApiService] = useState("");
 	const [showFreshdeskTicketPopup, setShowFreshdeskTicketPopup] =
 		useState(false);
 	const [showFreshdeskNotePopup, setShowFreshdeskNotePopup] = useState(false);
 	const [showFreshdeskDumpPopup, setShowFreshdeskDumpPopup] = useState(false);
+	const [terminalVisible, setTerminalVisible] = useState(false);
+
+	const toggleTerminalVisibility = () => {
+		setTerminalVisible(!terminalVisible);
+	};
 
 	// Reference to the context menu to check if click occurred inside or outside
 	const contextMenuRef = useRef(null);
@@ -288,7 +292,7 @@ function App() {
 
 				let maxHostWidth = 0;
 				let maxServiceWidth = 0;
-				sortedData.forEach((item) => {
+				for (const item of sortedData) {
 					maxHostWidth = Math.max(
 						maxHostWidth,
 						item.host_display_name.length * 8,
@@ -297,7 +301,7 @@ function App() {
 						maxServiceWidth,
 						item.description.length * 8,
 					);
-				});
+				}
 				setMaxHostWidth(maxHostWidth);
 				setMaxServiceWidth(maxServiceWidth);
 			})
@@ -306,7 +310,22 @@ function App() {
 
 	const handleContextMenu = (e, index) => {
 		e.preventDefault();
-		setContextMenuPosition({ x: e.clientX, y: e.clientY });
+
+		// Calculate the adjusted Y coordinate considering the scroll position, menu height, and viewport height
+		const windowHeight = window.innerHeight;
+		const menuHeight = 265;
+		const scrollTop = window.scrollY;
+		const clientY = e.clientY;
+		const viewportBottom = scrollTop + windowHeight;
+		let adjustedY = clientY + scrollTop;
+
+		// Check if adjusting for the menu height exceeds the viewport bottom
+		if (adjustedY + menuHeight > viewportBottom) {
+			// Adjust the Y position to keep the menu fully visible within the viewport
+			adjustedY = Math.max(0, viewportBottom - menuHeight);
+		}
+
+		setContextMenuPosition({ x: e.clientX, y: adjustedY });
 		setContextMenuVisible(true);
 
 		// Update $context_api_host with the value of host_display_name from the API response of the hovered row
@@ -319,14 +338,6 @@ function App() {
 
 	const closeContextMenu = () => {
 		setContextMenuVisible(false);
-	};
-
-	const handleHoverTableRow = (index) => {
-		setHoveredTableRowIndex(index);
-	};
-
-	const handleLeaveTableRow = () => {
-		setHoveredTableRowIndex(null);
 	};
 
 	const getStateText = (state) => {
@@ -376,9 +387,8 @@ function App() {
 		if (hours >= 24) {
 			const days = Math.floor(hours / 24);
 			return `${days}d ${hours % 24}h`;
-		} else {
-			return `${hours}h ${minutes}m`;
 		}
+		return `${hours}h ${minutes}m`;
 	};
 
 	// Start of 1st context button
@@ -516,43 +526,54 @@ function App() {
 			className=" relative antialiased gap-2 flex flex-col h-screen"
 			data-theme="white"
 		>
+			<Terminal
+				isVisible={terminalVisible}
+				toggleVisibility={toggleTerminalVisibility}
+			/>
 			{apiData ? (
 				<div className="flex justify-between gap-2 items-center p-2 border-b sticky top-0 bg-base-100 z-50 py-4">
 					<div className="font-extrabold text-2xl">
 						Kubemon - WEB Interface for kubeigen
 					</div>
 					<div className="gap-2 flex">
-						<a href="/">
-							<button className="btn btn-sm">
+						<a
+							href="http://naemon.int.eigen.co/thruk/cgi-bin/status.cgi?hostgroup=all&style=hostdetail&hoststatustypes=12"
+							target="_blank"
+							rel="noreferrer"
+						>
+							<button type="button" className="btn btn-sm">
 								<FiServer />
 								Hosts
 							</button>
 						</a>
-						<a href="/">
-							<button className="btn btn-sm">
+						<a
+							href="http://naemon.int.eigen.co/thruk/cgi-bin/status.cgi?host=all&servicestatustypes=28"
+							target="_blank"
+							rel="noreferrer"
+						>
+							<button type="button" className="btn btn-sm">
 								<MdMiscellaneousServices />
 								Services
 							</button>
 						</a>
-						<a href="/">
-							<button className="btn btn-sm">
-								<LuTerminal />
-								Terminal
-							</button>
-						</a>
+						<button
+							type="button"
+							className="btn btn-sm"
+							onClick={toggleTerminalVisibility}
+						>
+							<LuTerminal />
+							Terminal
+						</button>
 					</div>
 				</div>
 			) : null}
 			{apiData ? (
 				<div className="p-2">
-					<table className="table table-fixed w-full ">
+					<table className="table table-fixed w-full">
 						<thead className="text-base">
 							<tr>
 								<th
-									style={{
-										width: `${maxHostWidth}px`,
-										whiteSpace: "nowrap",
-									}}
+									style={{ width: `${maxHostWidth}px`, whiteSpace: "nowrap" }}
 								>
 									Host
 								</th>
@@ -564,22 +585,8 @@ function App() {
 								>
 									Service
 								</th>
-								<th
-									style={{
-										width: "100px",
-										textAlign: "center",
-									}}
-								>
-									Status
-								</th>
-								<th
-									style={{
-										width: "100px",
-										textAlign: "center",
-									}}
-								>
-									Since
-								</th>
+								<th style={{ width: "100px", textAlign: "center" }}>Status</th>
+								<th style={{ width: "100px", textAlign: "center" }}>Since</th>
 								<th className="whitespace-nowrap overflow-hidden text-ellipsis">
 									Description
 								</th>
@@ -591,27 +598,13 @@ function App() {
 									key={index}
 									id={`row-${index}`}
 									className="hover"
-									/* style={{
-
-										transition: "background-color 0.2s ease-out",
-										cursor: "default",
-									}} */
-									onMouseEnter={() => handleHoverTableRow(index)}
-									onMouseLeave={handleLeaveTableRow}
 									onContextMenu={(e) => handleContextMenu(e, index)}
 								>
 									<td className="whitespace-nowrap">
 										{item.host_display_name}
 									</td>
 									<td className="whitespace-nowrap">{item.description}</td>
-									<td
-										className="text-center justify-center flex"
-										style={
-											{
-												// backgroundColor: getStateText(item.state).color,
-											}
-										}
-									>
+									<td className="text-center justify-center flex">
 										<div className={`${getStateText(item.state).badge} `}>
 											{getStateText(item.state).text}
 										</div>
@@ -666,14 +659,13 @@ function App() {
 						top: contextMenuPosition.y,
 						left: contextMenuPosition.x,
 						minWidth: "200px",
-						// background: "#303030",
 						fontSize: "12px",
-						// padding: "4px",
 					}}
 				>
 					<ul className="menu bg-base-200 rounded-box">
 						<li>
 							<button
+								type="button"
 								onClick={() => {
 									closeContextMenu();
 									alertDetails();
@@ -685,6 +677,7 @@ function App() {
 						</li>
 						<li>
 							<button
+								type="button"
 								onClick={() => {
 									closeContextMenu();
 									createTicket();
@@ -696,6 +689,7 @@ function App() {
 						</li>
 						<li>
 							<button
+								type="button"
 								onClick={() => {
 									closeContextMenu();
 									noteTicket();
@@ -707,6 +701,7 @@ function App() {
 						</li>
 						<li>
 							<button
+								type="button"
 								onClick={() => {
 									closeContextMenu();
 									dumpLogs();
@@ -718,9 +713,11 @@ function App() {
 						</li>
 						<li>
 							<button
+								type="button"
 								onClick={() => {
 									closeContextMenu();
 									viewLogs();
+									toggleTerminalVisibility();
 								}}
 								className="context-menu-button"
 							>
@@ -729,6 +726,7 @@ function App() {
 						</li>
 						<li>
 							<button
+								type="button"
 								onClick={() => {
 									closeContextMenu();
 									shellPod();
@@ -740,6 +738,7 @@ function App() {
 						</li>
 						<li>
 							<button
+								type="button"
 								onClick={() => {
 									closeContextMenu();
 									restartPod();
